@@ -26,18 +26,13 @@ namespace Backend.Repository
                 .AsNoTracking();
         }
 
-        //remove em cascata, removendo tambem todas as tabelas ligadas
-        public override async Task<bool> Remover(int codigo)
+        public async Task<Veiculo?> ObterComDetalhes(int codigoVeiculo)
         {
-            var veiculo = await _context.Veiculo.FindAsync(codigo);
-            if (veiculo != null)
-            {   //Remove os relacionamentos (Carro, Caminhao e Revisoes)
-                _context.Veiculo.Remove(veiculo);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            else
-                return false;
+            return await _context.Veiculo
+                .Include(x => x.Carro)
+                .Include(x => x.Caminhao)
+                .Include(x => x.Revisoes)
+                .FirstOrDefaultAsync(x => x.Codigo == codigoVeiculo);
         }
     }
 }

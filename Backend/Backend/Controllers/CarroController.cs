@@ -14,11 +14,11 @@ namespace Backend.Controllers
             _carroService = carroService;
         }
 
-        [HttpGet]
-        public IEnumerable<Carro> Index()
-        {
-            return _carroService.ObterTodosOsVeiculos();
-        }
+        //[HttpGet]
+        //public IEnumerable<Carro> Index()
+        //{
+        //    return _carroService.ObterTodosOsVeiculos();
+        //}
 
         //[HttpPost]
         //public async Task<IActionResult> Salvar(CarroDTO carroDTO)

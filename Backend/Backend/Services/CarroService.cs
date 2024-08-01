@@ -11,10 +11,10 @@ namespace Backend.Services
 			_carroRepository = carroRepository;
 		}
 
-		public IEnumerable<Carro> ObterTodosOsVeiculos()
-		{
-			return _carroRepository.ObterTodos();
-		}
+		//public IEnumerable<Carro> ObterTodosOsVeiculos()
+		//{
+		//	return _carroRepository.ObterTodos();
+		//}
 
 		//public async Task<Carro> Salvar(Carro carro)
 		//{

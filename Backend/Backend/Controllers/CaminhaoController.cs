@@ -14,11 +14,11 @@ namespace Backend.Controllers
             _caminhaoService = caminhaoService;
         }
 
-        [HttpGet]
-        public IEnumerable<Caminhao> Index()
-        {
-            return _caminhaoService.ObterTodosOsVeiculos();
-        }
+        //[HttpGet]
+        //public IEnumerable<Caminhao> Index()
+        //{
+        //    return _caminhaoService.ObterTodosOsVeiculos();
+        //}
 
         //[HttpPost]
         //public async Task<Caminhao> Salvar(CaminhaoDTO caminhaoDTO)

@@ -1,5 +1,5 @@
 import { TipoVeiculoEnum } from "../enum/TipoVeiculoEnum"
-import { Caminhao } from "./caminmhao"
+import { Caminhao } from "./caminhao"
 import { Carro } from "./carro"
 import { Revisao } from "./revisao"
 

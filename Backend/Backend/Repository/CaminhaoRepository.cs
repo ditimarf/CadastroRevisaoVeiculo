@@ -11,10 +11,10 @@ namespace Backend.Repository
 			_context = context;
 		}
 
-        public override IEnumerable<Caminhao> ObterTodos()
-        {
-            return _context.Caminhao.Include(x => x.Veiculo).AsNoTracking();
-        }
+        //public override IEnumerable<Caminhao> ObterTodos()
+        //{
+        //    return _context.Caminhao.Include(x => x.Veiculo).AsNoTracking();
+        //}
     }
 }
 

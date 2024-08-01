@@ -2,7 +2,7 @@
 {
     public class CaminhaoDTO
 	{
-		public decimal CapacidadeCarga { get; set; }
+		public decimal CapacidadeDeCarga { get; set; }
 	}
 }
 

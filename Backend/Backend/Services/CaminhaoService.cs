@@ -12,10 +12,10 @@ namespace Backend.Services
             _caminhaoRepository = caminhaoRepository;
         }
 
-        public IEnumerable<Caminhao> ObterTodosOsVeiculos()
-        {
-            return _caminhaoRepository.ObterTodos();
-        }
+        //public IEnumerable<Caminhao> ObterTodosOsVeiculos()
+        //{
+        //    return _caminhaoRepository.ObterTodos();
+        //}
 
         //public async Task<Caminhao> Salvar(Caminhao caminhao)
         //{

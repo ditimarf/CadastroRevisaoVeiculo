@@ -23,4 +23,8 @@ export class VeiculoService {
   RemoverVeiculo(codigoVeiculo:number): Observable<boolean>{
     return this.http.delete<boolean>(this.apiUrl + "?codigoVeiculo="+ codigoVeiculo);
   }
+
+  AtualizarVeiculo(veiculo: Veiculo): Observable<Veiculo> {
+    return this.http.put<Veiculo>(this.apiUrl, veiculo);
+  }
 }

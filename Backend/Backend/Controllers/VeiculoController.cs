@@ -52,7 +52,7 @@ namespace Backend.Controllers
                         if (veiculoDTO.Caminhao == null)
                             return BadRequest("É necessário informar as informacoes do Caminhão");
 
-                        veiculo.Caminhao = new Caminhao { CapacidadeDeCarga = veiculoDTO.Caminhao.CapacidadeCarga };
+                        veiculo.Caminhao = new Caminhao { CapacidadeDeCarga = veiculoDTO.Caminhao.CapacidadeDeCarga };
                         veiculo.Carro = null;
                     }
 
@@ -77,6 +77,51 @@ namespace Backend.Controllers
             catch
             {
                 return false;
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Editar(EditarVeiculoDTO veiculoDTO)
+        {
+            try
+            {
+                if (veiculoDTO != null)
+                {
+                    var veiculo = new Veiculo
+                    {
+                        Codigo = veiculoDTO.Codigo,
+                        Ano = veiculoDTO.Ano,
+                        Cor = veiculoDTO.Cor,
+                        Modelo = veiculoDTO.Modelo,
+                        Placa = veiculoDTO.Placa,
+                        TipoVeiculo = (TipoVeiculoEnum)veiculoDTO.TipoVeiculo,
+                    };
+
+                    if (veiculo.TipoVeiculo == TipoVeiculoEnum.Carro)
+                    {
+                        if (veiculoDTO.Carro == null)
+                            return BadRequest("É necessário informar as informacoes do Carro");
+
+                        veiculo.Carro = new Carro { CapacidadePassageiro = veiculoDTO.Carro.CapacidadePassageiro };
+                        veiculo.Caminhao = null;
+                    }
+                    else
+                    {
+                        if (veiculoDTO.Caminhao == null)
+                            return BadRequest("É necessário informar as informacoes do Caminhão");
+
+                        veiculo.Caminhao = new Caminhao { CapacidadeDeCarga = veiculoDTO.Caminhao.CapacidadeDeCarga };
+                        veiculo.Carro = null;
+                    }
+
+                    return Ok(await _veiculoService.Editar(veiculo, veiculo.Codigo));
+                }
+                else
+                    return BadRequest("O Valor nao pode ser null");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }

@@ -14,7 +14,7 @@ import localePt from '@angular/common/locales/pt';
 import { MatIconModule } from '@angular/material/icon';
 import { VeiculoService } from '../veiculo.service';
 import { Carro } from '../models/carro';
-import { Caminhao } from '../models/caminmhao';
+import { Caminhao } from '../models/caminhao';
 import { ChangeDetectorRef } from '@angular/core';
 
 registerLocaleData(localePt);
@@ -57,10 +57,11 @@ export class DetalhesVeiculoComponent {
     if (data?.veiculo) {
       this.veiculo = data.veiculo
       this.ehUmNovoVeiculo = false
-      if(this.veiculo.carro)
-      this.capacidadePassageiros = this.veiculo.carro.capacidadePassageiro
-      if(this.veiculo.caminhao)
-        this.capacidadeCarga = this.veiculo.caminhao.capacidadeCarga
+      if (this.veiculo.carro)
+        this.capacidadePassageiros = this.veiculo.carro.capacidadePassageiro
+
+      if (this.veiculo.caminhao)
+        this.capacidadeCarga = this.veiculo.caminhao.capacidadeDeCarga
     }
     else {
       this.veiculo = this.veiculo = new Veiculo(0, "", new Date().getFullYear(), "", "", null)
@@ -72,28 +73,10 @@ export class DetalhesVeiculoComponent {
     if (!this.veiculoValidoParaSalvar())
       return;
 
-    if (this.ehUmNovoVeiculo) {
-      if (this.veiculo.tipoVeiculo == TipoVeiculoEnum.Carro) {
-        this.veiculo.carro = new Carro(this.capacidadePassageiros)
-        this.veiculo.caminhao = null
-      }
-      else {
-        this.veiculo.carro = null
-        this.veiculo.caminhao = new Caminhao(this.capacidadeCarga)
-      }
-
-      this.veiculoService.InserirVeiculo(this.veiculo).subscribe(novoVeiculo => {
-        if (novoVeiculo) {
-          this.veiculo = novoVeiculo;
-          this.ehUmNovoVeiculo = false;
-          alert("Veiculo salvo com sucesso")
-          this.cd.detectChanges()
-        }
-      })
-    }
-    else {
-      alert("Atualizacao")
-    }
+    if (this.ehUmNovoVeiculo)
+      this.salvarNovoVeiculo()
+    else
+      this.atualizarVeiculo()
 
     this.houveAlteracao = true
   }
@@ -101,6 +84,10 @@ export class DetalhesVeiculoComponent {
   veiculoValidoParaSalvar(): boolean {
     if (!this.veiculo.modelo) {
       alert("Insira o modelo do veiculo para poder salvar");
+      return false;
+    }
+    else if (this.veiculo.ano <= 0) {
+      alert("Insira o ano do veiculo para poder salvar");
       return false;
     }
     else if (!this.veiculo.cor) {
@@ -136,15 +123,66 @@ export class DetalhesVeiculoComponent {
   }
 
   salvarRevisao() {
+    if(!this.novaRevisaoEhValida())
+      return; 
     this.revisaoService.InserirRevisao(this.veiculo.codigo, this.quilometragemNovaRevisao, this.dataNovaRevisao, this.valorNovaRevisao).subscribe(novaRevisao => {
       if (novaRevisao)
         this.veiculo.revisoes.push(novaRevisao);
     })
   }
 
+  novaRevisaoEhValida(): boolean {
+    if (this.quilometragemNovaRevisao <= 0) {
+      alert('Insira uma quilometragem válida para salvar a revisão');
+      return false;
+    }
+    else if (this.valorNovaRevisao <= 0) {
+      alert('Insira uma valor válido para salvar a revisão');
+      return false;
+    }
+
+    return true;
+  }
+
   removerRevisao(codigoRevisao: number) {
     this.revisaoService.RemoverRevisao(codigoRevisao).subscribe(_ => {
       this.veiculo.revisoes = this.veiculo.revisoes.filter(x => x.codigo != codigoRevisao)
     })
+  }
+
+  salvarNovoVeiculo() {
+    this.passarAtributosParaCarroCaminhao()
+
+    this.veiculoService.InserirVeiculo(this.veiculo).subscribe(novoVeiculo => {
+      if (novoVeiculo) {
+        this.veiculo = novoVeiculo;
+        this.ehUmNovoVeiculo = false;
+        alert("Veiculo salvo com sucesso")
+        this.cd.detectChanges()
+      }
+    })
+  }
+
+  atualizarVeiculo() {
+    this.passarAtributosParaCarroCaminhao()
+    this.veiculoService.AtualizarVeiculo(this.veiculo).subscribe(veiculoAtualizado => {
+      if (veiculoAtualizado) {
+        this.veiculo = veiculoAtualizado;
+        this.ehUmNovoVeiculo = false;
+        alert("Veiculo atualizado com sucesso")
+        this.cd.detectChanges()
+      }
+    })
+  }
+
+  passarAtributosParaCarroCaminhao() {
+    if (this.veiculo.tipoVeiculo == TipoVeiculoEnum.Carro) {
+      this.veiculo.carro = new Carro(this.capacidadePassageiros)
+      this.veiculo.caminhao = null
+    }
+    else {
+      this.veiculo.carro = null
+      this.veiculo.caminhao = new Caminhao(this.capacidadeCarga)
+    }
   }
 }
