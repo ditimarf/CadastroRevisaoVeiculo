@@ -28,6 +28,12 @@ namespace TesteBackend
                             Carro = new Carro
                             {
                                 CapacidadePassageiro = 5
+                            },
+                            Revisoes = new List<Revisao>
+                            {
+                                new Revisao { CodigoVeiculo = 10, DataRevisao = DateTime.Now, Quilometragem = 75000, ValorRevisao = 550 },
+                                new Revisao { CodigoVeiculo = 10, DataRevisao = DateTime.Now, Quilometragem = 79000, ValorRevisao = 200 },
+                                new Revisao { CodigoVeiculo = 10, DataRevisao = DateTime.Now, Quilometragem = 83000, ValorRevisao = 175 },
                             }
                         });
 

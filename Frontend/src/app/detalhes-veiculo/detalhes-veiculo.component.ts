@@ -16,6 +16,7 @@ import { VeiculoService } from '../veiculo.service';
 import { Carro } from '../models/carro';
 import { Caminhao } from '../models/caminhao';
 import { ChangeDetectorRef } from '@angular/core';
+import { StringValidator } from '../validators/stringValidator';
 
 registerLocaleData(localePt);
 
@@ -44,9 +45,9 @@ export class DetalhesVeiculoComponent {
   ehUmNovoVeiculo: boolean = true
   caixaInsercaoRevisaoAberta: boolean = false
 
-  quilometragemNovaRevisao: number = 0
+  quilometragemNovaRevisao: string = ""
   dataNovaRevisao: Date = new Date()
-  valorNovaRevisao: number = 0
+  valorNovaRevisao: string = ""
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: { veiculo: Veiculo | null },
@@ -86,7 +87,7 @@ export class DetalhesVeiculoComponent {
       alert("Insira o modelo do veiculo para poder salvar");
       return false;
     }
-    else if (this.veiculo.ano <= 0) {
+    else if (!StringValidator.isNumeric(this.veiculo.ano.toString()) || this.veiculo.ano <= 0) {
       alert("Insira o ano do veiculo para poder salvar");
       return false;
     }
@@ -102,11 +103,11 @@ export class DetalhesVeiculoComponent {
       alert("Insira a placa do veiculo para poder salvar");
       return false;
     }
-    else if (this.veiculo.tipoVeiculo == TipoVeiculoEnum.Carro && this.capacidadePassageiros <= 0) {
+    else if (this.veiculo.tipoVeiculo == TipoVeiculoEnum.Carro && (!StringValidator.isNumeric(this.capacidadePassageiros.toString()) || this.capacidadePassageiros <= 0)) {
       alert("Insira a capacidade de passageiros do veiculo para poder salvar");
       return false;
     }
-    else if (this.veiculo.tipoVeiculo == TipoVeiculoEnum.Caminhao && this.capacidadeCarga <= 0) {
+    else if (this.veiculo.tipoVeiculo == TipoVeiculoEnum.Caminhao && (!StringValidator.isNumeric(this.capacidadeCarga.toString()) || this.capacidadeCarga <= 0)) {
       alert("Insira a capacidade de carga do veiculo para poder salvar");
       return false;
     }
@@ -123,20 +124,22 @@ export class DetalhesVeiculoComponent {
   }
 
   salvarRevisao() {
-    if(!this.novaRevisaoEhValida())
-      return; 
-    this.revisaoService.InserirRevisao(this.veiculo.codigo, this.quilometragemNovaRevisao, this.dataNovaRevisao, this.valorNovaRevisao).subscribe(novaRevisao => {
+    if (!this.novaRevisaoEhValida())
+      return;
+    this.revisaoService.InserirRevisao(this.veiculo.codigo, Number(this.quilometragemNovaRevisao), this.dataNovaRevisao, Number(this.valorNovaRevisao)).subscribe(novaRevisao => {
       if (novaRevisao)
         this.veiculo.revisoes.push(novaRevisao);
     })
   }
 
   novaRevisaoEhValida(): boolean {
-    if (this.quilometragemNovaRevisao <= 0) {
+    console.log("numvero convertido " + Number(this.quilometragemNovaRevisao))
+
+    if (!StringValidator.isNumeric(this.quilometragemNovaRevisao) || Number(this.quilometragemNovaRevisao) <= 0) {
       alert('Insira uma quilometragem válida para salvar a revisão');
       return false;
     }
-    else if (this.valorNovaRevisao <= 0) {
+    else if (!StringValidator.isNumeric(this.valorNovaRevisao) || Number(this.valorNovaRevisao) <= 0) {
       alert('Insira uma valor válido para salvar a revisão');
       return false;
     }
