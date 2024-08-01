@@ -12,8 +12,6 @@ namespace Backend
             builder.Services.AddScoped<RevisaoRepository>();
             builder.Services.AddScoped<VeiculoRepository>();
 
-            builder.Services.AddScoped<CarroService>();
-            builder.Services.AddScoped<CaminhaoService>();
             builder.Services.AddScoped<RevisaoService>();
             builder.Services.AddScoped<VeiculoService>();
         }
