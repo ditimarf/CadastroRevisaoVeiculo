@@ -1,0 +1,48 @@
+<div style="margin: 10%;">
+    <div style="display: flex; justify-content: end; margin-bottom: 10px;">
+        <button class="btn btn_laranja" (click)="criarVeiculo()">Criar</button>
+    </div>
+
+    <div style="padding: 10px; border: 1px solid transparent; background-color: white;">
+        <div>
+            <p>Placa|Modelo|Ano|Cor</p>
+            <div class="input-group mb-3">
+                <input [(ngModel)]="textoFiltro" type="text" class="form-control" placeholder="Filtro">
+                <div class="input-group-append" style="margin-left: 5px;">
+                    <button class="btn btn_laranja" (click)="filtrarVeiculos()" type="button">Filtrar</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Ações</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Ano</th>
+                    <th scope="col">Cor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let veiculo of veiculos | paginate: { itemsPerPage: contador, currentPage: pag }">
+                    <td>
+                        <button class="btn" (click)="editarVeiculo(veiculo)">Editar</button>
+                        <button class="btn" (click)="removerVeiculo(veiculo)">Remover</button>
+                    </td>
+                    <td>{{veiculo.placa}}</td>
+                    <td>{{veiculo.modelo}}</td>
+                    <td>{{veiculo.ano}}</td>
+                    <td>{{veiculo.cor}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="input-group" style="display:flex; justify-content: space-between;">
+            <p>Total: {{veiculos.length}}</p>
+            <div class="text-right">
+                <pagination-controls (pageChange)="pag = $event" previousLabel="Anterior"
+                    nextLabel="Próximo"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

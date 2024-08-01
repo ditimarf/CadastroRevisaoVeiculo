@@ -1,0 +1,87 @@
+<div style="margin: 40px;">
+    <div *ngIf="this.veiculo">
+        <h2>Cadastrar Veículo</h2>
+
+        <div class="row">
+            <div class="form-group col-6">
+                <p>Marca/Modelo</p>
+                <input [disabled]="!ehUmNovoVeiculo" [(ngModel)]="veiculo.modelo" type="text" class="form-control">
+            </div>
+            <div class="form-group col-6">
+                <p>Ano</p>
+                <input [disabled]="!ehUmNovoVeiculo" [(ngModel)]="veiculo.ano" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-6">
+                <p>Cor</p>
+                <input [disabled]="!ehUmNovoVeiculo" [(ngModel)]="veiculo.cor" type="text" class="form-control">
+            </div>
+            <div class="form-group col-6">
+                <p>Tipo Veículo</p>
+
+                <select [disabled]="!ehUmNovoVeiculo" [(ngModel)]="veiculo.tipoVeiculo" class="form-control">
+                    <option *ngFor="let tipo of listaTiposVeiculo" [value]="tipo.valor">
+                        {{ tipo.descricao }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-6">
+                <p>Placa</p>
+                <input [disabled]="!ehUmNovoVeiculo" [(ngModel)]="veiculo.placa" type="text" class="form-control">
+            </div>
+
+            <div *ngIf="veiculo.tipoVeiculo == TipoVeiculoEnum.Carro" class="form-group col-6">
+                <p>Capacidade Passageiros</p>
+                <input [disabled]="!ehUmNovoVeiculo" [(ngModel)]="capacidadePassageiros" type="text" class="form-control">
+            </div>
+
+            <div *ngIf="veiculo.tipoVeiculo == TipoVeiculoEnum.Caminhao" class="form-group col-6">
+                <p>Capacidade Carga</p>
+                <input [disabled]="!ehUmNovoVeiculo" [(ngModel)]="capacidadeCarga" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div *ngIf="!ehUmNovoVeiculo">
+            <p style="margin-top: 20px;"><b>Revisões </b> <button
+                    (click)="caixaInsercaoRevisaoAberta = !caixaInsercaoRevisaoAberta" class="btn"><mat-icon
+                        fontIcon="add_circle" /></button></p>
+            <div *ngIf="caixaInsercaoRevisaoAberta" class="row align-items-center"
+                style="border: 1px solid whitesmoke; border-radius: 5px; padding: 10px; margin: 10px; background-color: whitesmoke;">
+                <div class="form-group col-2">
+                    <label>Quilometragem</label>
+                    <input [(ngModel)]="quilometragemNovaRevisao" class="form-control" />
+                </div>
+
+                <div class="form-group col-5">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Data</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="dataNovaRevisao">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-group col-2">
+                    <label>R$ Valor</label>
+                    <input [(ngModel)]="valorNovaRevisao" class="form-control" />
+                </div>
+
+                <div class="from-group col-2">
+                    <button (click)="salvarRevisao()" class="btn btn_laranja">Salvar Revisão</button>
+                </div>
+            </div>
+            <p *ngFor="let rev of veiculo.revisoes">{{rev.quilometragem}} KM | {{transformDate(rev.dataRevisao)}} | R$
+                {{rev.valorRevisao}} | <button class="btn" (click)="removerRevisao(rev.codigo)"><mat-icon
+                        fontIcon="delete" /></button></p>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: end;">
+        <button class="btn btn_laranja" (click)="salvarVeiculo()">Salvar</button>
+    </div>
+</div>
