@@ -1,11 +1,12 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Backend;
 using Backend.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDBContext>();
+var connectionString = builder.Configuration.GetConnectionString("DataBaseConnectionString");
+builder.Services.AddDbContext<AppDBContext>(option => option.UseSqlServer(connectionString));
 builder.AdicionarInjecaoDeDependencia();
 
 builder.Services.AddControllers();
@@ -47,3 +48,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

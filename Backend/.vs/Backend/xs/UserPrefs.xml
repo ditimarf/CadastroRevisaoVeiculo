@@ -1,4 +1,5 @@
 ﻿<Properties StartupConfiguration="{9FDD98E8-9AA4-45C2-9046-5B39D6D98E31}|https">
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.Backend FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.TesteBackend FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.Backend PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
 </Properties>

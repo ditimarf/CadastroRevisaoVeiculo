@@ -16,10 +16,10 @@ namespace Backend.Repository
             _configuration = configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DataBaseConnectionString"));
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DataBaseConnectionString"));
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
